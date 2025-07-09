@@ -1,0 +1,138 @@
+Frontend
+
+en
+conf t
+interf gig0/1 
+ip address 80.44.44.1 255.255.255.248
+no sh
+interf gig0/0 
+ip address 80.44.44.9 255.255.255.252
+no sh
+router ospf 1 
+network 80.44.44.0 0.0.0.7 area 1
+network 80.44.44.8 0.0.0.3 area 1
+do wr
+
+R1-F
+
+en
+conf t
+interf gig0/1 
+ip address 80.44.44.2 255.255.255.248
+no sh
+interf gig0/0 
+ip address 80.44.44.13 255.255.255.252
+no sh
+router ospf 1 
+network 80.44.44.0 0.0.0.7 area 1
+network 80.44.44.12 0.0.0.3 area 1
+do wr
+
+R2-F
+
+en
+conf t
+interf gig0/1 
+ip address 80.44.44.3 255.255.255.248
+no sh
+interf gig0/0 
+ip address 80.44.44.17 255.255.255.252
+no sh
+router ospf 1 
+network 80.44.44.0 0.0.0.7 area 1
+network 80.44.44.16 0.0.0.3 area 1
+do wr
+
+Backend
+
+en
+conf t
+interf gig0/1 
+ip address 4.4.60.65 255.255.255.248
+no sh
+interf gig0/0 
+ip address 4.4.60.73 255.255.255.252
+no sh
+router ospf 1 
+network 4.4.60.64 0.0.0.7 area 1
+network 4.4.60.72 0.0.0.3 area 1
+do wr
+
+R1-B
+
+en
+conf t
+interf gig0/1 
+ip address 4.4.60.66 255.255.255.248
+no sh
+interf gig0/0 
+ip address 4.4.60.77 255.255.255.252
+no sh
+router ospf 1 
+network 4.4.60.64 0.0.0.7 area 1
+network 4.4.60.76 0.0.0.3 area 1
+do wr
+
+R2-B
+
+en
+conf t
+interf gig0/1 
+ip address 4.4.60.67 255.255.255.248
+no sh
+interf gig0/0 
+ip address 4.4.60.81 255.255.255.252
+no sh
+router ospf 1 
+network 4.4.60.64 0.0.0.7 area 1
+network 4.4.60.80 0.0.0.3 area 1
+do wr
+
+Internet
+
+en
+conf t
+interf gig0/1 
+ip address 4.4.60.74 255.255.255.252
+no sh
+interf gig0/0 
+ip address 80.44.44.10 255.255.255.252
+no sh
+interf gig0/2 
+ip address 40.40.0.49 255.255.255.248
+no sh
+router ospf 1 
+network 4.4.60.72 0.0.0.3 area 1
+network 80.44.44.8 0.0.0.3 area 1
+network 40.40.0.48 0.0.0.7 area 1
+do wr
+
+VPN GRE
+
+R1_F
+
+en
+conf t
+interf tunnel 0
+ip address 4.8.12.17 255.255.255.252
+no sh
+tunnel source gig0/1
+tunnel destination 4.4.60.66
+tunnel mode gre ip
+exit
+ip route 4.4.60.76 255.255.255.252 4.8.12.18
+do wr
+
+R1_B
+
+en
+conf t
+interf tunnel 0
+ip address 4.8.12.18 255.255.255.252
+no sh
+tunnel source gig0/1
+tunnel destination 80.44.44.2
+tunnel mode gre ip
+exit
+ip route 80.44.44.12 255.255.255.252 4.8.12.17
+do wr

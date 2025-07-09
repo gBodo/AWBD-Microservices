@@ -1,0 +1,3 @@
+http://localhost:8081/api/books?search=harry
+http://localhost:8081/api/books?category=2
+http://localhost:8081/api/books?category=2&search=harry 
